@@ -15,7 +15,9 @@ class Table {
     this.e = e;
     this.texture = tex;
 
-    cube = new Cube();
+    //cube = new Cube(texture);
+    cube = new Cube(color(-1), color(0),color(0),color(0),color(0),color(0),texture, null, null, null, null,null);
+    
     plan = cube.getCube();
     plan.scale(L, l, e);
     plan.rotateX(PI / 2);
@@ -32,6 +34,8 @@ class Table {
 
   PShape getTable() {
     PShape s = createShape(GROUP);
+    
+    s.addChild(plan);
     PShape[] legs  =new PShape[4];
     
     legs[0] = getLeg();
@@ -49,15 +53,15 @@ class Table {
     legs[3] = getLeg();
     legs[3].translate(L/2-2*e, H/2 + e, -l/2+2*e);
     s.addChild(legs[3]);
-  
-    s.addChild(plan);
+    
+
     
     return s;
   }
 
 
   PShape getLeg() {
-    color c = color(0,0,0);
+    color c = color(0);
     PShape leg = (new Cube(c)).getCube();
     leg.scale(e, H, e);
     leg.beginShape(QUADS);
