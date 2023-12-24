@@ -19,10 +19,7 @@ class RangeeTables {
     this.texture = tex;
     this.nbTables = nbTab;
     this.texture = tex;    
-    this.nbTables = nbTables;
     this.nbRangees = nbRan;
-
-
   }
   
    PShape getRangee() {
@@ -30,17 +27,29 @@ class RangeeTables {
     PShape[] tables  =new PShape[nbTables];
     
     for(int i = 0; i<nbTables; i++){
-      tables[0] = (new Table(l, L, H, e, tex)).getTable();
-      tables[0].translate(i*L, 0, 0);
-      s.addChild(tables[0]);
+      tables[i] = (new Table(l, L, H, e, texture)).getTable();
+      tables[i].translate(i*L, 0, 0);
+      s.addChild(tables[i]);
     
     }
-    
-   
     return s;
    
    }
 
+ PShape getRangees() {
+    PShape s = createShape(GROUP);
+    PShape[] rangee  =new PShape[nbRangees];
+    
+    for(int i = 0; i<nbRangees; i++){
+      rangee[i] = getRangee();
+      rangee[i].translate(0, 0, i*2*l);
+      s.addChild(rangee[i]);
+    
+    }
+   
+    return s;
+   
+   }
 
 
 

@@ -16,24 +16,19 @@ float camY = 0;
 float camZ = 0;
 
 
-  float l = 80;
-  float L= 160;
-  float h = 73;
-  float e = 3;
-  
+float l = 80;
+float L= 160;
+float h = 73;
+float e = 3;
+
 void setup() {
   size(600, 600, P3D);
   tex = loadImage("Data/images/toit.jpg");
   texTable = loadImage("Data/images/table.jpg");
-   textureMode(NORMAL);
-  Cube cu = new Cube(100);
-  Quad q = new Quad(100, tex);
-  CubeFaceDiff cfd = new CubeFaceDiff(100, q.getQuad());
-  cube = cu.getCube();
-  
-  tableModel = new Table(l,L,h,e,tex);
+  textureMode(NORMAL);
+  tableModel = new Table(l, L, h, e, texTable);
   table = tableModel.getTable();
-  rangee = (new RangeeTables(3, 1, l,L,h,e,texTable)).getRangee();
+  rangee = (new RangeeTables(3, 4, l, L, h, e, texTable)).getRangees();
   colorShader = loadShader("Data/LightShaderTexFrag.glsl", "Data/LightShaderTexVert.glsl");
 }
 
@@ -41,8 +36,8 @@ void draw() {
   background(255);
   bougerCamera();
   camera(camX, camY, camZ, 0, 0, 0, 0, 1, 0);
-if (mousePressed) {
-    textureWrap(REPEAT); 
+  if (mousePressed) {
+    textureWrap(REPEAT);
   } else {
     textureWrap(CLAMP);
   }
@@ -57,5 +52,5 @@ void bougerCamera() {
   camZ = rayon * cos(phi) * cos(theta);
 
   theta += 0.01;
-  phi   = -0.5;   
+  phi   = -0.5;
 }
