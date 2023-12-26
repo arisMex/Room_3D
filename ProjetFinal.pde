@@ -3,10 +3,13 @@ Table tableModel;
 PShape rangee;
 PShape  table;
 PShape  table2;
+PShape salle;
+
 
 PShader colorShader;
 PImage tex;
 PImage texTable;
+PImage texSol;
 
 float rayon = 200;
 float theta = 0;
@@ -21,14 +24,21 @@ float L= 160;
 float h = 73;
 float e = 3;
 
+int longueur =978 , largeur= 594, hauteur= 278 ;
+
 void setup() {
-  size(600, 600, P3D);
+  size(800, 800, P3D);
   tex = loadImage("Data/images/toit.jpg");
   texTable = loadImage("Data/images/table.jpg");
+  texSol = loadImage("Data/images/sol.jpg");
+
   textureMode(NORMAL);
-  tableModel = new Table(l, L, h, e, texTable);
-  table = tableModel.getTable();
-  rangee = (new RangeeTables(3, 4, l, L, h, e, texTable)).getRangees();
+  //tableModel = new Table(l, L, h, e, texTable);
+  salle = (new Salle(longueur, largeur, hauteur, tex, texSol)).getSalle();
+  
+
+  //table = tableModel.getTable();
+  //rangee = (new RangeeTables(3, 4, l, L, h, e, texTable)).getRangees();
   colorShader = loadShader("Data/LightShaderTexFrag.glsl", "Data/LightShaderTexVert.glsl");
 }
 
@@ -43,7 +53,8 @@ void draw() {
   }
   shader(colorShader);
   //shape(cube);
-  shape(rangee);
+ // shape(rangee);
+  shape(salle);
 }
 
 void bougerCamera() {
@@ -51,6 +62,6 @@ void bougerCamera() {
   camY = rayon * sin(phi);
   camZ = rayon * cos(phi) * cos(theta);
 
-  theta += 0.01;
-  phi   = -0.5;
+  //theta += 0.01;
+  //phi   = -0.5;
 }
