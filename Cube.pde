@@ -33,6 +33,12 @@ class Cube {
     this.texture = t;
     this.t = 1;
   }
+    Cube(PImage t, boolean rep) {
+    if (rep)textureWrap(REPEAT);
+
+    this.texture = t;
+    this.t = 1;
+  }
   Cube() {
     this.t = 1;
   }

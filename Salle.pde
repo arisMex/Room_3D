@@ -1,39 +1,39 @@
 public class Salle {
   int longueur, largeur, hauteur;
-  PImage texMur, texSol;
+  PImage texMur, texSol, texPlafond;
 
   // Constructeur de la salle
-  public Salle(int lg, int pr, int ht, PImage txMur, PImage txSol) {
+  public Salle(int lg, int lr, int ht, PImage txMur , PImage txSol, PImage txPlaf) {
     this.longueur = lg;
-    this.largeur = pr;
+    this.largeur = lr;
     this.hauteur = ht;
     this.texMur = txMur;
     this.texSol = txSol;
+    this.texPlafond = txPlaf;    
   }
 
 
   PShape getSalle() {
     PShape s = createShape(GROUP);
     s.addChild(getMurFond());
-    //s.addChild(getMurG());
+    s.addChild(getMurG());
     //s.addChild(getMurD());
-    //s.addChild(getMurFront());
-    //s.addChild(getSol());
+    s.addChild(getMurFront());
+    s.addChild(getSol());
+    s.addChild(getPlafond());
     //s.rotateY(PI/20);
     //s.rotateX(PI/20);
 
-    s.translate(-largeur/2,0, 0);
+    s.translate(-largeur/2, 0, 0);
     return s;
   }
-
-
 
   PShape getMurFond() {
     PShape mur = (new Cube(texMur)).getCube();
     mur.scale(largeur, hauteur, 0);
     mur.beginShape(QUADS);
-    mur.translate(largeur/2, hauteur/2, 0);
-    //mur.texture(texMur);
+    mur.translate(0, 0, -longueur/2);
+    mur.texture(texMur);
     mur.endShape(CLOSE);
     return mur;
   }
@@ -41,8 +41,7 @@ public class Salle {
   PShape getMurFront() {
     PShape mur = (new Cube(texMur)).getCube();
     mur.scale(largeur, hauteur, 0);
-    mur.translate(0, 0, -longueur);
-
+    mur.translate(0, 0, longueur/2);
     return mur;
   }
 
@@ -50,7 +49,7 @@ public class Salle {
     PShape mur = (new Cube(texMur)).getCube();
     mur.scale(longueur, hauteur, 0);
     mur.rotateY(PI/2);
-    mur.translate(-largeur/2, 0, longueur/2);
+    mur.translate(-largeur/2, 0, 0);
     //mur.beginShape(QUADS);
     //mur.texture(texMur);
     //mur.endShape(CLOSE);
@@ -61,7 +60,7 @@ public class Salle {
     PShape mur = (new Cube(texMur)).getCube();
     mur.scale(longueur, hauteur, 0);
     mur.rotateY(PI/2);
-    mur.translate(largeur/2, 0, longueur/2);
+    mur.translate(largeur/2, 0, 0);
     //mur.beginShape(QUADS);
     //mur.texture(texMur);
     //mur.endShape(CLOSE);
@@ -72,6 +71,15 @@ public class Salle {
     PShape mur = (new Cube(texSol)).getCube();
     mur.scale(largeur, longueur, 0);
     mur.rotateX(PI/2);
+    mur.translate(0, hauteur/2, 0);
+    return mur;
+  }
+
+  PShape getPlafond() {
+    PShape mur = (new Cube(texPlafond, true)).getCube();
+    mur.scale(largeur, longueur, 0);
+    mur.rotateX(PI/2);
+    mur.translate(0, -hauteur/2, 0);
     return mur;
   }
 }

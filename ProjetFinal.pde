@@ -7,9 +7,7 @@ PShape salle;
 
 
 PShader colorShader;
-PImage tex;
-PImage texTable;
-PImage texSol;
+PImage tex, texTable, texSol, texPlafond;
 
 float rayon = 200;
 float theta = 0;
@@ -28,13 +26,14 @@ int longueur =978 , largeur= 594, hauteur= 278 ;
 
 void setup() {
   size(800, 800, P3D);
-  tex = loadImage("Data/images/toit.jpg");
+  tex = loadImage("Data/images/mur.jpg");
   texTable = loadImage("Data/images/table.jpg");
   texSol = loadImage("Data/images/sol.jpg");
+  texPlafond = loadImage("Data/images/toit.jpg");
 
   textureMode(NORMAL);
   //tableModel = new Table(l, L, h, e, texTable);
-  salle = (new Salle(longueur, largeur, hauteur, tex, texSol)).getSalle();
+  salle = (new Salle(longueur, largeur, hauteur, tex, texSol, texPlafond)).getSalle();
   
 
   //table = tableModel.getTable();
@@ -43,7 +42,7 @@ void setup() {
 }
 
 void draw() {
-  background(255);
+  background(0);
   bougerCamera();
   camera(camX, camY, camZ, 0, 0, 0, 0, 1, 0);
   if (mousePressed) {
@@ -62,6 +61,6 @@ void bougerCamera() {
   camY = rayon * sin(phi);
   camZ = rayon * cos(phi) * cos(theta);
 
-  //theta += 0.01;
-  //phi   = -0.5;
+  theta += 0.01;
+  phi   = 0.5;
 }
