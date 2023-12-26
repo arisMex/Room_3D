@@ -50,12 +50,15 @@ class Cube {
     s.noStroke();
 
     //top
+
     if (texture1 != null)
       s.texture(texture1);
     else if (c1 != -1)
       s.fill(c1);
+    else if (texture != null)
+      s.texture(texture);
     else
-    s.fill(0);
+      s.fill(0);
     //s.fill(color(164, 98, 185));
     s.vertex( - c, -c, -c, 0, 0);
     s.vertex(c, -c, -c, 0, 1);
@@ -68,8 +71,10 @@ class Cube {
       s.texture(texture2);
     else if (c2 != -1)
       s.fill(c2);
+    else if (texture != null)
+      s.texture(texture);
     else
-    s.fill(0);
+      s.fill(0);
     s.vertex( - c, -c, -c, 0, 0);
     s.vertex(c, -c, -c, 0, 1);
     s.vertex(c, c, -c, 1, 1);
@@ -80,8 +85,10 @@ class Cube {
       s.texture(texture3);
     else if (c3 != -1)
       s.fill(c3);
+    else if (texture != null)
+      s.texture(texture);
     else
-    s.fill(0);
+      s.fill(0);
     //s.fill(color(0, 255, 0));
     s.vertex(c, -c, c, 0, 0);
     s.vertex( - c, -c, c, 0, 1);
@@ -95,8 +102,10 @@ class Cube {
       s.texture(texture4);
     else if (c4 != -1)
       s.fill(c4);
+    else if (texture != null)
+      s.texture(texture);
     else
-    s.fill(0);
+      s.fill(0);
     //s.fill(color(225, 50, 0));
     s.vertex( - c, c, -c, 0, 0);
     s.vertex(c, c, -c, 0, 1);
@@ -108,8 +117,10 @@ class Cube {
       s.texture(texture5);
     else if (c5 != -1)
       s.fill(c5);
+    else if (texture != null)
+      s.texture(texture);
     else
-    s.fill(0);
+      s.fill(0);
     //s.fill(color(225, 50, 100));
     s.vertex( - c, -c, -c, 0, 0);
     s.vertex( - c, c, -c, 0, 1);
@@ -121,8 +132,10 @@ class Cube {
       s.texture(texture6);
     else if (c6 != -1)
       s.fill(c6);
+    else if (texture != null)
+      s.texture(texture);
     else
-    s.fill(0);
+      s.fill(0);
     //s.fill(color(253, 233, 88));
     s.vertex(c, -c, -c, 0, 0);
     s.vertex(c, c, -c, 0, 1);
