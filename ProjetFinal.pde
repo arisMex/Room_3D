@@ -7,7 +7,7 @@ PShape salle;
 
 
 PShader colorShader;
-PImage tex, texTable, texSol, texPlafond, texTbleau;
+PImage tex, texTable, texSol, texPlafond, texTbleau, texPorte;
 
 float rayon = 200;
 float theta = 0;
@@ -31,7 +31,7 @@ void setup() {
   texSol = loadImage("Data/images/sol.jpg");
   texPlafond = loadImage("Data/images/toit.jpeg");
   texTbleau = loadImage("Data/images/tableau.png");
-
+  texPorte = loadImage("Data/images/texturePorte.png");
 
   textureMode(NORMAL);
   //tableModel = new Table(l, L, h, e, texTable);
@@ -40,7 +40,7 @@ void setup() {
 
   //table = tableModel.getTable();
   //rangee = (new RangeeTables(3, 4, l, L, h, e, texTable)).getRangees();
-  colorShader = loadShader("Data/LightShaderTexFrag.glsl", "Data/LightShaderTexVert.glsl");
+  //colorShader = loadShader("Data/LightShaderTexFrag.glsl", "Data/LightShaderTexVert.glsl");
 }
 void draw() {
   background(0);
@@ -52,7 +52,7 @@ void draw() {
   } else {
     textureWrap(CLAMP);
   }
-  shader(colorShader);
+  //shader(colorShader);
     pushMatrix();
     translate(largeur/2, 0, 0);
     shape(salle);
