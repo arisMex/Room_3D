@@ -33,29 +33,35 @@ class Tableau {
   PShape getGrandTab() {
     PShape[] cad  =new PShape[4];
     PShape plaque = (new Cube(texTbleau)).getCube();
+    PShape porteCr = (new Cube(textureChaise)).getCube();
+
     for (int i = 0; i < 4; ++i) {
       cad[i] = (new Cube(c)).getCube();
     }
     PShape s = createShape(GROUP);
 
     cad[0].scale(e, l, e);
-    cad[0].translate(-l+(e)/2, 0, 0);
+    cad[0].translate(-l+(0)/2, 0, 0);
     s.addChild(cad[0]);
 
     cad[1].scale(e, l, e);
-    cad[1].translate(l+(e)/2, 0, 0);
+    cad[1].translate(l+(0)/2, 0, 0);
     s.addChild(cad[1]);
 
     cad[2].scale(2*l-(e)/2, e, e);
-    cad[2].translate(0, -(l+e)/2, 0);
+    cad[2].translate(0, -(l+0)/2, 0);
     s.addChild(cad[2]);
 
     cad[3].scale(2*l-(e)/2, e, e);
-    cad[3].translate(0, (l+e)/2, 0);
+    cad[3].translate(0, (l+0)/2, 0);
     s.addChild(cad[3]);
 
     plaque.scale(2*l-(e), l-e, e);
     s.addChild(plaque);
+    
+    porteCr.scale(2*l-(e), 2*e, 3*e);
+    porteCr.translate(0, (l+0)/2, -2*e);
+    s.addChild(porteCr);
 
 
     return s;
@@ -70,19 +76,19 @@ class Tableau {
     PShape s = createShape(GROUP);
 
     cad[0].scale(e, l, e);
-    cad[0].translate(-(l+e)/2, 0, 0);
+    cad[0].translate(-(l+0)/2, 0, 0);
     s.addChild(cad[0]);
 
     cad[1].scale(e, l, e);
-    cad[1].translate((l+e)/2, 0, 0);
+    cad[1].translate((l+0)/2, 0, 0);
     s.addChild(cad[1]);
 
     cad[2].scale(l, e, e);
-    cad[2].translate(0, -(l+e)/2, 0);
+    cad[2].translate(0, -(l+0)/2, 0);
     s.addChild(cad[2]);
 
     cad[3].scale(l, e, e);
-    cad[3].translate(0, (l+e)/2, 0);
+    cad[3].translate(0, (l+0)/2, 0);
     s.addChild(cad[3]);
 
     plaque.scale(l-(e), l-e, e);

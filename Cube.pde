@@ -45,111 +45,104 @@ class Cube {
 
 
 
-  PShape getCube() {
-    PShape s = createShape();
-    float c = t / 2;
+PShape getCube() {
+  PShape s = createShape();
+  float c = t / 2;
 
-    s.beginShape(QUADS);
-    s.shininess(200.0);
-    s.emissive(0, 0, 0);
-    s.normal(0, 0, 1);
-    s.noStroke();
+  s.beginShape(QUADS);
+  s.shininess(200.0);
+  s.emissive(0, 0, 0);
+  s.normal(0, 0, 1);
+  s.noStroke();
 
-    //top
-    if (texture1 != null)
-      s.texture(texture1);
-    else if (c1 != -1)
-      s.fill(c1);
-    else if (texture != null)
-      s.texture(texture);
-    else
-      s.fill(c);
-    //s.fill(color(164, 98, 185));
-    s.vertex( - c, -c, -c, 0, 0);
-    s.vertex(c, -c, -c, 0, 1);
-    s.vertex(c, -c, c, 1, 1);
-    s.vertex( - c, -c, c, 1, 0);
+  // Top
+  if (texture1 != null)
+    s.texture(texture1);
+  else if (c1 != -1)
+    s.fill(c1);
+  else if (texture != null)
+    s.texture(texture);
+  else
+    s.fill(c);
+  s.vertex(-c, -c, -c, 0, 0);
+  s.vertex(c, -c, -c, 1, 0);
+  s.vertex(c, -c, c, 1, 1);
+  s.vertex(-c, -c, c, 0, 1);
 
-    //front
-    //s.fill(color(255, 0, 0));
-    if (texture2 != null)
-      s.texture(texture2);
-    else if (c2 != -1)
-      s.fill(c2);
-    else if (texture != null)
-      s.texture(texture);
-    else
-      s.fill(c);
-    s.vertex( - c, -c, -c, 0, 0);
-    s.vertex(c, -c, -c, 0, 1);
-    s.vertex(c, c, -c, 1, 1);
-    s.vertex( - c, c, -c, 1, 0);
+  // Front
+  if (texture2 != null)
+    s.texture(texture2);
+  else if (c2 != -1)
+    s.fill(c2);
+  else if (texture != null)
+    s.texture(texture);
+  else
+    s.fill(c);
+  s.vertex(-c, -c, -c, 0, 0);
+  s.vertex(c, -c, -c, 1, 0);
+  s.vertex(c, c, -c, 1, 1);
+  s.vertex(-c, c, -c, 0, 1);
 
-    //arriere
-    if (texture3 != null)
-      s.texture(texture3);
-    else if (c3 != -1)
-      s.fill(c3);
-    else if (texture != null)
-      s.texture(texture);
-    else
-      s.fill(c);
-    //s.fill(color(0, 255, 0));
-    s.vertex(c, -c, c, 0, 0);
-    s.vertex( - c, -c, c, 0, 1);
-    s.vertex( - c, c, c, 1, 1);
-    s.vertex(c, c, c, 1, 0);
+  // Back
+  if (texture3 != null)
+    s.texture(texture3);
+  else if (c3 != -1)
+    s.fill(c3);
+  else if (texture != null)
+    s.texture(texture);
+  else
+    s.fill(c);
+  s.vertex(c, -c, c, 0, 0);
+  s.vertex(-c, -c, c, 1, 0);
+  s.vertex(-c, c, c, 1, 1);
+  s.vertex(c, c, c, 0, 1);
 
+  // Bottom
+  if (texture4 != null)
+    s.texture(texture4);
+  else if (c4 != -1)
+    s.fill(c4);
+  else if (texture != null)
+    s.texture(texture);
+  else
+    s.fill(c);
+  s.vertex(-c, c, -c, 0, 0);
+  s.vertex(c, c, -c, 1, 0);
+  s.vertex(c, c, c, 1, 1);
+  s.vertex(-c, c, c, 0, 1);
 
+  // Left
+  if (texture5 != null)
+    s.texture(texture5);
+  else if (c5 != -1)
+    s.fill(c5);
+  else if (texture != null)
+    s.texture(texture);
+  else
+    s.fill(c);
+  s.vertex(-c, -c, -c, 0, 0);
+  s.vertex(-c, c, -c, 1, 0);
+  s.vertex(-c, c, c, 1, 1);
+  s.vertex(-c, -c, c, 0, 1);
 
-    //bottom
-    if (texture4 != null)
-      s.texture(texture4);
-    else if (c4 != -1)
-      s.fill(c4);
-    else if (texture != null)
-      s.texture(texture);
-    else
-      s.fill(c);
-    //s.fill(color(225, 50, 0));
-    s.vertex( - c, c, -c, 0, 0);
-    s.vertex(c, c, -c, 0, 1);
-    s.vertex(c, c, c, 1, 1);
-    s.vertex( - c, c, c, 1, 0);
+  // Right
+  if (texture6 != null)
+    s.texture(texture6);
+  else if (c6 != -1)
+    s.fill(c6);
+  else if (texture != null)
+    s.texture(texture);
+  else
+    s.fill(c);
+  s.vertex(c, -c, -c, 0, 0);
+  s.vertex(c, c, -c, 1, 0);
+  s.vertex(c, c, c, 1, 1);
+  s.vertex(c, -c, c, 0, 1);
 
-    //left
-    if (texture5 != null)
-      s.texture(texture5);
-    else if (c5 != -1)
-      s.fill(c5);
-    else if (texture != null)
-      s.texture(texture);
-    else
-      s.fill(c);
-    //s.fill(color(225, 50, 100));
-    s.vertex( - c, -c, -c, 0, 0);
-    s.vertex( - c, c, -c, 0, 1);
-    s.vertex( - c, c, c, 1, 1);
-    s.vertex( - c, -c, c, 1, 0);
+  s.endShape(CLOSE);
 
-    //right
-    if (texture6 != null)
-      s.texture(texture6);
-    else if (c6 != -1)
-      s.fill(c6);
-    else if (texture != null)
-      s.texture(texture);
-    else
-      s.fill(c);
-    //s.fill(color(253, 233, 88));
-    s.vertex(c, -c, -c, 0, 0);
-    s.vertex(c, c, -c, 0, 1);
-    s.vertex(c, c, c, 1, 1);
-    s.vertex(c, -c, c, 1, 0);
+  return s;
+}
 
-    s.endShape(CLOSE);
-
-    return s;
-  }
 
 }

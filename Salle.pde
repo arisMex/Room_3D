@@ -21,7 +21,8 @@ public class Salle {
     tables.translate(-largeur/3, hauteur/2-h, -longueur/2.5); 
 
     //test
-    PShape porte  = (new Porte(205, 92, 10, 15, texPorte)).getPorte();
+    //PShape porte  = (new Porte(205, 92, 10, 15, texPorte)).getPorte();
+    //PShape chaise  = (new Chaise(40, 44, 84, 2,textureChaise)).getChaise();
 
     PShape s = createShape(GROUP);
     s.addChild(tableau);
@@ -32,7 +33,8 @@ public class Salle {
     s.addChild(getSol());
     s.addChild(getPlafond());
     s.addChild(tables);
-    s.addChild(porte);
+    //s.addChild(porte);
+   // s.addChild(chaise);
 
     s.translate(-largeur/2, 0, 0);
     return s;
@@ -56,14 +58,24 @@ public class Salle {
   }
 
   PShape getMurG() {
+    PShape porte = (new Porte(205, 92, 10, 15, texPorte)).getPorte();
+    porte.translate(-longueur/3, (hauteur -205+e)/2,0);
     PShape mur = (new Cube(texMur)).getCube();
+    PShape s = createShape(GROUP);
+
     mur.scale(longueur, hauteur, 0);
-    mur.rotateY(PI/2);
-    mur.translate(-largeur/2, 0, 0);
+    s.addChild(porte);
+    //mur.rotateY(PI/2);
+    //mur.translate(-largeur/2, 0, 0);
+    s.addChild(mur);
+    s.rotateY(PI/2);
+    s.translate(-largeur/2, 0, 0);
+    
+    
     //mur.beginShape(QUADS);
     //mur.texture(texMur);
     //mur.endShape(CLOSE);
-    return mur;
+    return s;
   }
 
   PShape getMurD() {
