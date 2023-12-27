@@ -84,10 +84,10 @@ class Porte {
     p2.translate( l/16 , 0, e/3);
     
     p3.scale(e/3, e/3, e/2);
-    p3.translate( l/16 , 0, -e/3);
+    p3.translate( l/16 , 0, -e/1.5);
     
     p4.scale(l/8+e/8, e/3, e/3);
-    p4.translate(0, 0, -e/2);
+    p4.translate(0, 0, -e);
     
     
     s.addChild(p1);
