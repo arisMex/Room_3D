@@ -14,13 +14,21 @@ public class Salle {
 
 
   PShape getSalle() {
+    PShape tableau = (new Tableau(100, 1.5)).getTableau() ;
+    tableau.translate(largeur/15, 0,longueur/2);
+    
+    PShape tables  = (new RangeeTables(3, 4, l, L, h, e, texTable)).getRangees();
+    tables.translate(-largeur/3, hauteur/2-h, -longueur/2.5); 
+
     PShape s = createShape(GROUP);
+    s.addChild(tableau);
     s.addChild(getMurFond());
     s.addChild(getMurG());
-    //s.addChild(getMurD());
+    s.addChild(getMurD());
     s.addChild(getMurFront());
     s.addChild(getSol());
     s.addChild(getPlafond());
+    s.addChild(tables);
     //s.rotateY(PI/20);
     //s.rotateX(PI/20);
 
