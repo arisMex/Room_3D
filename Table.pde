@@ -17,7 +17,6 @@ class Table {
 
     //cube = new Cube(texture);
     cube = new Cube(color(-1), color(0),color(0),color(0),color(0),color(0),texture, null, null, null, null,null);
-    
     plan = cube.getCube();
     plan.scale(L, l, e);
     plan.rotateX(PI / 2);

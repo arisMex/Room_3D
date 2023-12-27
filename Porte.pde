@@ -32,9 +32,8 @@ class Porte {
 
   PShape getCadre() {
     PShape[] cad  =new PShape[3];
-    PShape plaque = (new Cube(texTbleau)).getCube();
     for (int i = 0; i < 3; ++i) {
-      cad[i] = (new Cube(c)).getCube();
+      cad[i] = (new Cube(texPorte)).getCube();
     }
     PShape s = createShape(GROUP);
 
@@ -77,21 +76,37 @@ class Porte {
     PShape p2 = (new Cube(c)).getCube();
     PShape p3 = (new Cube(c)).getCube();
     PShape p4 = (new Cube(c)).getCube();
+    PShape p5 = (new Cube(c)).getCube();
+    PShape p6 = (new Cube(c)).getCube();
+
+
     PShape s = createShape(GROUP);
     p1.scale(l/8+e/8, e/3, e/3);
     p1.translate(0, 0, e/2);
     p2.scale(e/3, e/3, e/2);
-    p2.translate( l/16 , 0, e/3);
-    p3.scale(e/3, e/3, e/2);
-    p3.translate( l/16 , 0, -e/1.5);
-    p4.scale(l/8+e/8, e/3, e/2.5);
+    p2.translate( l/16, 0, e/3);
+
+    p4.scale(l/8+e/8, e/3, e/3);
     p4.translate(0, 0, -e);
-    
-    
+    p3.scale(e/3, e/3, e/2);
+    p3.translate( l/16, 0, -e/1.5);
+
+
+    p5.scale( e/2, h/8+e/8, e/2);
+    p5.translate( l/16, 0, -e/3);
+
+    p6.scale( e/2, h/8+e/8, e/2);
+    p6.translate( l/16, 0, 0);
+
+
     s.addChild(p1);
     s.addChild(p2);
     s.addChild(p3);
     s.addChild(p4);
+    s.addChild(p5);
+    s.addChild(p6);
+
+
     return s;
   }
 }
