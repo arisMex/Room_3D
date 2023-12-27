@@ -33,7 +33,7 @@ class Cube {
     this.texture = t;
     this.t = 1;
   }
-    Cube(PImage t, boolean rep) {
+  Cube(PImage t, boolean rep) {
     if (rep)textureWrap(REPEAT);
 
     this.texture = t;
@@ -56,7 +56,6 @@ class Cube {
     s.noStroke();
 
     //top
-
     if (texture1 != null)
       s.texture(texture1);
     else if (c1 != -1)
@@ -152,4 +151,5 @@ class Cube {
 
     return s;
   }
+
 }

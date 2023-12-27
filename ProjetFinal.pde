@@ -7,7 +7,7 @@ PShape salle;
 
 
 PShader colorShader;
-PImage tex, texTable, texSol, texPlafond;
+PImage tex, texTable, texSol, texPlafond, texTbleau;
 
 float rayon = 200;
 float theta = 0;
@@ -29,7 +29,9 @@ void setup() {
   tex = loadImage("Data/images/mur.jpg");
   texTable = loadImage("Data/images/table.jpg");
   texSol = loadImage("Data/images/sol.jpg");
-  texPlafond = loadImage("Data/images/toit.jpg");
+  texPlafond = loadImage("Data/images/toit.jpeg");
+  texTbleau = loadImage("Data/images/tableau.png");
+
 
   textureMode(NORMAL);
   //tableModel = new Table(l, L, h, e, texTable);
@@ -40,27 +42,39 @@ void setup() {
   //rangee = (new RangeeTables(3, 4, l, L, h, e, texTable)).getRangees();
   colorShader = loadShader("Data/LightShaderTexFrag.glsl", "Data/LightShaderTexVert.glsl");
 }
-
 void draw() {
   background(0);
   bougerCamera();
   camera(camX, camY, camZ, 0, 0, 0, 0, 1, 0);
+  
   if (mousePressed) {
     textureWrap(REPEAT);
   } else {
     textureWrap(CLAMP);
   }
   shader(colorShader);
-  //shape(cube);
- // shape(rangee);
-  shape(salle);
+    pushMatrix();
+    translate(largeur/2, 0, 0);
+    shape(salle);
+    popMatrix();
+
 }
 
 void bougerCamera() {
+  float sensitivity = 0.01;
+
+  // Rotation de la caméra avec la souris
+  if (mousePressed) {
+    theta += sensitivity * (pmouseX - mouseX);
+    phi += sensitivity * (pmouseY - mouseY);
+  }
+
+  // Zoom avec le scroll
+  //rayon -= 0.1 * mouseWheel(); // Ajustez la valeur selon la sensibilité souhaitée
+  rayon = constrain(rayon, 200, 1000);
+
+  // Conversion des coordonnées sphériques en coordonnées cartésiennes
   camX = rayon * cos(phi) * sin(theta);
   camY = rayon * sin(phi);
   camZ = rayon * cos(phi) * cos(theta);
-
-  theta += 0.01;
-  phi   = 0.5;
 }
