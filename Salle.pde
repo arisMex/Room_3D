@@ -14,11 +14,14 @@ public class Salle {
 
 
   PShape getSalle() {
-    PShape tableau = (new Tableau(100, 1.5)).getTableau() ;
-    tableau.translate(largeur/15, 0,longueur/2);
+    PShape tableau = (new Tableau(120, 1.5)).getTableau() ;
+    tableau.translate(0, 0,longueur/2);
     
     PShape tables  = (new RangeeTables(3, 4, l, L, h, e, texTable)).getRangees();
     tables.translate(-largeur/3, hauteur/2-h, -longueur/2.5); 
+
+    //test
+    PShape porte  = (new Porte(205, 92, 10, 15, texPorte)).getPorte();
 
     PShape s = createShape(GROUP);
     s.addChild(tableau);
@@ -29,8 +32,7 @@ public class Salle {
     s.addChild(getSol());
     s.addChild(getPlafond());
     s.addChild(tables);
-    //s.rotateY(PI/20);
-    //s.rotateX(PI/20);
+    s.addChild(porte);
 
     s.translate(-largeur/2, 0, 0);
     return s;

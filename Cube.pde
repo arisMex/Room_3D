@@ -1,7 +1,7 @@
 class Cube {
   float t=1;
   PImage texture = null, texture1=null, texture2=null, texture3=null, texture4=null, texture5=null, texture6=null;
-  color c = -1, c1 = -1, c2 = -1, c3 = -1, c4 = -1, c5 = -1, c6 = -1 ;
+  color c = 0, c1 = -1, c2 = -1, c3 = -1, c4 = -1, c5 = -1, c6 = -1 ;
 
 
 
@@ -63,7 +63,7 @@ class Cube {
     else if (texture != null)
       s.texture(texture);
     else
-      s.fill(0);
+      s.fill(c);
     //s.fill(color(164, 98, 185));
     s.vertex( - c, -c, -c, 0, 0);
     s.vertex(c, -c, -c, 0, 1);
@@ -79,7 +79,7 @@ class Cube {
     else if (texture != null)
       s.texture(texture);
     else
-      s.fill(0);
+      s.fill(c);
     s.vertex( - c, -c, -c, 0, 0);
     s.vertex(c, -c, -c, 0, 1);
     s.vertex(c, c, -c, 1, 1);
@@ -93,7 +93,7 @@ class Cube {
     else if (texture != null)
       s.texture(texture);
     else
-      s.fill(0);
+      s.fill(c);
     //s.fill(color(0, 255, 0));
     s.vertex(c, -c, c, 0, 0);
     s.vertex( - c, -c, c, 0, 1);
@@ -110,7 +110,7 @@ class Cube {
     else if (texture != null)
       s.texture(texture);
     else
-      s.fill(0);
+      s.fill(c);
     //s.fill(color(225, 50, 0));
     s.vertex( - c, c, -c, 0, 0);
     s.vertex(c, c, -c, 0, 1);
@@ -125,7 +125,7 @@ class Cube {
     else if (texture != null)
       s.texture(texture);
     else
-      s.fill(0);
+      s.fill(c);
     //s.fill(color(225, 50, 100));
     s.vertex( - c, -c, -c, 0, 0);
     s.vertex( - c, c, -c, 0, 1);
@@ -140,7 +140,7 @@ class Cube {
     else if (texture != null)
       s.texture(texture);
     else
-      s.fill(0);
+      s.fill(c);
     //s.fill(color(253, 233, 88));
     s.vertex(c, -c, -c, 0, 0);
     s.vertex(c, c, -c, 0, 1);

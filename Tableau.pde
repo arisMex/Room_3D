@@ -4,8 +4,6 @@ class Tableau {
   color c = color(192,192,197);
   PImage texture;
 
-  Cube cube;
-  PShape plan;
 
   Tableau(float l, float e, PImage tex) {
     this.l = l;
