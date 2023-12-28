@@ -1,7 +1,7 @@
 class Tableau {
   float l;
   float e;
-  color c = color(192,192,197);
+  color c = color(167, 173, 180);
   PImage texture;
 
 

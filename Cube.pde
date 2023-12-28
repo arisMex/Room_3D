@@ -45,104 +45,76 @@ class Cube {
 
 
 
-PShape getCube() {
-  PShape s = createShape();
-  float c = t / 2;
+  PShape getCube() {
+    PShape s = createShape();
+    float c = t / 2;
 
-  s.beginShape(QUADS);
-  s.shininess(200.0);
-  s.emissive(0, 0, 0);
-  s.normal(0, 0, 1);
-  s.noStroke();
+    s.beginShape(QUADS);
+    s.shininess(200.0);
+    s.emissive(0, 0, 0);
+    s.normal(0, 0, 1);
+    s.noStroke();
 
-  // Top
-  if (texture1 != null)
-    s.texture(texture1);
-  else if (c1 != -1)
-    s.fill(c1);
-  else if (texture != null)
-    s.texture(texture);
-  else
-    s.fill(c);
-  s.vertex(-c, -c, -c, 0, 0);
-  s.vertex(c, -c, -c, 1, 0);
-  s.vertex(c, -c, c, 1, 1);
-  s.vertex(-c, -c, c, 0, 1);
+    // Top
+    applyTextureOrFill(s, texture1, c1, texture, this.c);
+    vertexWithTexture(s, -c, -c, -c, 0, 0);
+    vertexWithTexture(s, c, -c, -c, 1, 0);
+    vertexWithTexture(s, c, -c, c, 1, 1);
+    vertexWithTexture(s, -c, -c, c, 0, 1);
 
-  // Front
-  if (texture2 != null)
-    s.texture(texture2);
-  else if (c2 != -1)
-    s.fill(c2);
-  else if (texture != null)
-    s.texture(texture);
-  else
-    s.fill(c);
-  s.vertex(-c, -c, -c, 0, 0);
-  s.vertex(c, -c, -c, 1, 0);
-  s.vertex(c, c, -c, 1, 1);
-  s.vertex(-c, c, -c, 0, 1);
+    // Front
+    applyTextureOrFill(s, texture2, c2, texture, this.c);
+    vertexWithTexture(s, -c, -c, -c, 0, 0);
+    vertexWithTexture(s, c, -c, -c, 1, 0);
+    vertexWithTexture(s, c, c, -c, 1, 1);
+    vertexWithTexture(s, -c, c, -c, 0, 1);
 
-  // Back
-  if (texture3 != null)
-    s.texture(texture3);
-  else if (c3 != -1)
-    s.fill(c3);
-  else if (texture != null)
-    s.texture(texture);
-  else
-    s.fill(c);
-  s.vertex(c, -c, c, 0, 0);
-  s.vertex(-c, -c, c, 1, 0);
-  s.vertex(-c, c, c, 1, 1);
-  s.vertex(c, c, c, 0, 1);
+    // Back
+    applyTextureOrFill(s, texture3, c3, texture, this.c);
+    vertexWithTexture(s, c, -c, c, 0, 0);
+    vertexWithTexture(s, -c, -c, c, 1, 0);
+    vertexWithTexture(s, -c, c, c, 1, 1);
+    vertexWithTexture(s, c, c, c, 0, 1);
 
-  // Bottom
-  if (texture4 != null)
-    s.texture(texture4);
-  else if (c4 != -1)
-    s.fill(c4);
-  else if (texture != null)
-    s.texture(texture);
-  else
-    s.fill(c);
-  s.vertex(-c, c, -c, 0, 0);
-  s.vertex(c, c, -c, 1, 0);
-  s.vertex(c, c, c, 1, 1);
-  s.vertex(-c, c, c, 0, 1);
+    // Bottom
+    applyTextureOrFill(s, texture4, c4, texture, this.c);
+    vertexWithTexture(s, -c, c, -c, 0, 0);
+    vertexWithTexture(s, c, c, -c, 1, 0);
+    vertexWithTexture(s, c, c, c, 1, 1);
+    vertexWithTexture(s, -c, c, c, 0, 1);
 
-  // Left
-  if (texture5 != null)
-    s.texture(texture5);
-  else if (c5 != -1)
-    s.fill(c5);
-  else if (texture != null)
-    s.texture(texture);
-  else
-    s.fill(c);
-  s.vertex(-c, -c, -c, 0, 0);
-  s.vertex(-c, c, -c, 1, 0);
-  s.vertex(-c, c, c, 1, 1);
-  s.vertex(-c, -c, c, 0, 1);
+    // Left
+    applyTextureOrFill(s, texture5, c5, texture, this.c);
+    vertexWithTexture(s, -c, -c, -c, 0, 0);
+    vertexWithTexture(s, -c, c, -c, 1, 0);
+    vertexWithTexture(s, -c, c, c, 1, 1);
+    vertexWithTexture(s, -c, -c, c, 0, 1);
 
-  // Right
-  if (texture6 != null)
-    s.texture(texture6);
-  else if (c6 != -1)
-    s.fill(c6);
-  else if (texture != null)
-    s.texture(texture);
-  else
-    s.fill(c);
-  s.vertex(c, -c, -c, 0, 0);
-  s.vertex(c, c, -c, 1, 0);
-  s.vertex(c, c, c, 1, 1);
-  s.vertex(c, -c, c, 0, 1);
+    // Right
+    applyTextureOrFill(s, texture6, c6, texture, this.c);
+    vertexWithTexture(s, c, -c, -c, 0, 0);
+    vertexWithTexture(s, c, c, -c, 1, 0);
+    vertexWithTexture(s, c, c, c, 1, 1);
+    vertexWithTexture(s, c, -c, c, 0, 1);
 
-  s.endShape(CLOSE);
+    s.endShape(CLOSE);
 
-  return s;
-}
+    return s;
+  }
 
+  void applyTextureOrFill(PShape s, PImage tex, color c, PImage defaultTex, color defaultColor) {
+    if (tex != null) {
+      s.texture(tex);
+    } else if (c != -1) {
+      s.fill(c);
+    } else if (defaultTex != null) {
+      s.texture(defaultTex);
+    } else {
+      s.fill(defaultColor);
+    }
+  }
 
+  void vertexWithTexture(PShape s, float x, float y, float z, float u, float v) {
+    s.vertex(x, y, z, u, v);
+  }
 }

@@ -3,12 +3,28 @@ class Chaise {
   float L;
   float H;
   float e;
+  color c = color(37, 37, 39);
+
   PImage texture;
 
   Cube cube;
   PShape plan;
 
   Chaise(float l, float L, float H, float e, PImage tex) {
+    this.L = L;
+    this.l = l;
+    this.H = H;
+    this.e = e;
+    this.texture = tex;
+  }
+    Chaise(float l, float L, float H, float e, color c,  PImage tex) {
+    this.L = L;
+    this.l = l;
+    this.H = H;
+    this.e = e;
+    this.texture = tex;
+  }
+      Chaise(float l, float L, float H, float e, color c) {
     this.L = L;
     this.l = l;
     this.H = H;
@@ -68,7 +84,6 @@ class Chaise {
 
 
   PShape getLegDevant() {
-    color c = color(255, 255, 0);
     PShape leg = (new Cube(c)).getCube();
     leg.scale(e, H, e);
     leg.beginShape(QUADS);
@@ -78,7 +93,6 @@ class Chaise {
   }
 
   PShape getLegArriere() {
-    color c = color(255, 255, 0);
     PShape leg = (new Cube(c)).getCube();
     leg.scale(e, L, e);
     leg.beginShape(QUADS);
@@ -88,7 +102,7 @@ class Chaise {
   }
 
   PShape getLegAtelles() {
-    color c = color(255, 255, 0);
+
     PShape leg = (new Cube(c)).getCube();
     PShape leg2 = (new Cube(c)).getCube();
     PShape atelle = (new Cube(c)).getCube();
