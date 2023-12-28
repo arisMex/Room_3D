@@ -50,7 +50,7 @@ class RangeeTables {
       uc[i] = (new UC(28, 9, 29, texUcFace, texUcDos, texUcFace)).getUC();
       claviers[i] = (new Clavier(44, 13, 2, texClavier, texClavier)).getClavier();
       uc[i].translate(0, -29/2, l/5 );//hauteur + (H+29/2)
-      claviers[i].translate(0, -2/2, -l/5 + random(-l/10, l/10));
+      claviers[i].translate(0, -2, -l/5 + random(-l/10, l/10));
       claviers[i].rotateY(random(-PI/20, PI/20));
     }
     uc[0].translate(1.5*L + L/15, 0, 0);

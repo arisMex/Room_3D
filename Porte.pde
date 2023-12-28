@@ -72,12 +72,13 @@ class Porte {
   }
 
   PShape getSerrure() {
-    PShape p1 = (new Cube(c)).getCube();
-    PShape p2 = (new Cube(c)).getCube();
-    PShape p3 = (new Cube(c)).getCube();
-    PShape p4 = (new Cube(c)).getCube();
-    PShape p5 = (new Cube(c)).getCube();
-    PShape p6 = (new Cube(c)).getCube();
+    color c2 = color(0, 0, 0);
+    PShape p1 = (new Cube(c2)).getCube();
+    PShape p2 = (new Cube(c2)).getCube();
+    PShape p3 = (new Cube(c2)).getCube();
+    PShape p4 = (new Cube(c2)).getCube();
+    PShape p5 = (new Cube(c2)).getCube();
+    PShape p6 = (new Cube(c2)).getCube();
 
 
     PShape s = createShape(GROUP);
