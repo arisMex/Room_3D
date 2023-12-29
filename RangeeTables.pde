@@ -27,6 +27,7 @@ class RangeeTables {
     PShape s = createShape(GROUP);
     PShape[] tables  =new PShape[nbTables];
     PShape[] uc  =new PShape[nbUC];
+    PShape[] ecrans  =new PShape[nbUC];
     PShape[] claviers  =new PShape[nbUC];
     PShape[] chaises  =new PShape[nbTables*2];
 
@@ -39,19 +40,24 @@ class RangeeTables {
     }
     float a = (L- (2*40))/4;
     for (int i = 0; i<chaises.length; i++) {
-      chaises[i] = (new Chaise(40, 44, 84, 2,textureChaise)).getChaise();
+      chaises[i] = (new Chaise(40, 44, 84, 2, textureChaise)).getChaise();
       chaises[i].translate( i*2*a + 2*a + i*40 - L/2, H-44, -44/2 - random(20, 25) );
       chaises[i].rotateY(random(-PI/40, PI/40));
       s.addChild(chaises[i]);
     }
-    
+
 
     for (int i = 0; i<nbUC; i++) {
       uc[i] = (new UC(28, 9, 29, texUcFace, texUcDos, texUcFace)).getUC();
       claviers[i] = (new Clavier(44, 13, 2, texClavier, texClavier)).getClavier();
+      ecrans[i]  = (new Ecran(53, 31, 60, 2, texUcFace, texUcDos, texUcCote)).getEcran();
+
       uc[i].translate(0, -29/2, l/5 );//hauteur + (H+29/2)
       claviers[i].translate(0, -2, -l/5 + random(-l/10, l/10));
       claviers[i].rotateY(random(-PI/20, PI/20));
+
+      ecrans[i].translate(0, -31+e, l/3 + random(-l/10, l/30));
+      ecrans[i].rotateY(random(-PI/30, PI/30));
     }
     uc[0].translate(1.5*L + L/15, 0, 0);
     s.addChild(uc[0]);
@@ -74,6 +80,17 @@ class RangeeTables {
     s.addChild(claviers[3]);
     claviers[4].translate(L+ 22 + L/10, 0, 0);
     s.addChild(claviers[4]);
+
+    ecrans[0].translate(L- 22 - L/10, 0, 0);
+    s.addChild(ecrans[0]);
+    ecrans[1].translate(2*L- 22 - L/10, 0, 0);
+    s.addChild(ecrans[1]);
+    ecrans[2].translate(- 22 - L/10, 0, 0);
+    s.addChild(ecrans[2]);
+    ecrans[3].translate( 22 + L/10, 0, 0);
+    s.addChild(ecrans[3]);
+    ecrans[4].translate(L+ 22 + L/10, 0, 0);
+    s.addChild(ecrans[4]);
 
 
     return s;

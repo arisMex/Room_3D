@@ -20,9 +20,9 @@ public class Salle {
     PShape tables  = (new RangeeTables(3, 4, l, L, h, e, texTable)).getRangees();
     tables.translate(-largeur/3, hauteur/2-h, -longueur/2.5); 
 
-    //test
+    //tests
     //PShape porte  = (new Porte(205, 92, 10, 15, texPorte)).getPorte();
-    //PShape chaise  = (new Chaise(40, 44, 84, 2,textureChaise)).getChaise();
+   // PShape ecran  = (new Ecran(53, 31, 60, 2,texUcFace, texUcDos, texUcCote)).getEcran();
 
     PShape s = createShape(GROUP);
     s.addChild(tableau);
@@ -34,7 +34,7 @@ public class Salle {
     s.addChild(getPlafond());
     s.addChild(tables);
     //s.addChild(porte);
-   // s.addChild(chaise);
+    //s.addChild(ecran);
 
     s.translate(-largeur/2, 0, 0);
     return s;

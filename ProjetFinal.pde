@@ -1,13 +1,9 @@
-PShape cube;
-Table tableModel;
-PShape rangee;
-PShape  table;
-PShape  table2;
 PShape salle;
 
 
 PShader colorShader;
-PImage tex, texTable, texSol, texPlafond, texTbleau, texPorte, texUcFace, texUcDos, texUcCote, texClavier, textureChaise;
+PImage tex, texTable, texSol, texPlafond, texTbleau, texPorte, texUcFace, texUcDos, texUcCote, texClavier, textureChaise, texDosEcran;
+PImage[] fondEcran;
 
 float rayon = 200;
 float theta = 0;
@@ -25,7 +21,7 @@ float e = 3;
 int longueur =978, largeur= 594, hauteur= 278 ;
 
 void setup() {
-  size(800, 800, P3D);
+  size(1000, 800, P3D);
   tex = loadImage("Data/images/mur.jpg");
   texTable = loadImage("Data/images/table.jpg");
   texSol = loadImage("Data/images/sol.jpg");
@@ -37,16 +33,19 @@ void setup() {
   texUcCote = loadImage("Data/images/ucCote.png");
   texClavier = loadImage("Data/images/clavier.png");
   textureChaise = loadImage("Data/images/chaise.png");
+  texDosEcran = loadImage("Data/images/dosEcran.png");
 
+
+  fondEcran = new PImage[4];
+  fondEcran[0] = loadImage("Data/images/fe1.jpg");
+  fondEcran[1] = loadImage("Data/images/f2.png");
+  fondEcran[2] = loadImage("Data/images/f3.png");
+  fondEcran[3] = loadImage("Data/images/f4.jpg");
 
 
   textureMode(NORMAL);
-  //tableModel = new Table(l, L, h, e, texTable);
   salle = (new Salle(longueur, largeur, hauteur, tex, texSol, texPlafond)).getSalle();
 
-
-  //table = tableModel.getTable();
-  //rangee = (new RangeeTables(3, 4, l, L, h, e, texTable)).getRangees();
   //colorShader = loadShader("Data/LightShaderTexFrag.glsl", "Data/LightShaderTexVert.glsl");
 }
 void draw() {
@@ -59,6 +58,7 @@ void draw() {
   } else {
     textureWrap(CLAMP);
   }
+
   //shader(colorShader);
   pushMatrix();
   translate(largeur/2, 0, 0);
