@@ -64,7 +64,7 @@ class Ecran {
     s.addChild(cad[3]);
 
     ecran.scale(L, l, e/2);
-    ecran.translate(0, 0, -e/2);
+    ecran.translate(0, 0, -e/3.5);
     s.addChild(ecran);
 
     dos.scale(L+e, l+e, e);
