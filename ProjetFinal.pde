@@ -46,7 +46,7 @@ void setup() {
   textureMode(NORMAL);
   salle = (new Salle(longueur, largeur, hauteur, tex, texSol, texPlafond)).getSalle();
 
-  colorShader = loadShader("Data/LightShaderTexFrag.glsl", "Data/LightShaderTexVert.glsl");
+  //colorShader = loadShader("Data/LightShaderTexFrag.glsl", "Data/LightShaderTexVert.glsl");
 }
 void draw() {
   background(0);
@@ -66,7 +66,7 @@ void draw() {
       //pointLight(200, 200, 0,largeur/2,hauteur/2,longueur/2 );
      // pointLight(200, 200, 0,width/2,height/2,longueur/2 );
   
-  shader(colorShader);
+  //shader(colorShader);
   pushMatrix();
   translate(largeur/2, 0, 0);
   shape(salle);
