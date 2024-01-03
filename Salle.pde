@@ -82,7 +82,7 @@ public class Salle {
 
   PShape getMurD() {
     PShape[] mur = new PShape[5];
-    PShape[] fenetres  = new PShape[3];
+    PShape[] fenetres  = new PShape[4];
 
 
     for (int i = 0; i < mur.length; i++) {
@@ -94,12 +94,14 @@ public class Salle {
 
     PShape s = createShape(GROUP);
 
-    fenetres[0].translate(-longueur/3, 90 - hauteur/2 +7.5, 2);
+    fenetres[0].translate(-longueur/3, 90 - hauteur/2 +7.5, 0);
     s.addChild(fenetres[0]);
-    fenetres[1].translate(-longueur/3 + 190 +10, 90 - hauteur/2 +7.5, 2);
+    fenetres[1].translate(-longueur/3 + 190 +10, 90 - hauteur/2 +7.5, 0);
     s.addChild(fenetres[1]);
-    fenetres[2].translate(-longueur/3 + 2*190 +20, 90 - hauteur/2 +7.5, 2);
+    fenetres[2].translate(-longueur/3 + 2*190 +20, 90 - hauteur/2 +7.5, 0);
     s.addChild(fenetres[2]);
+    fenetres[3].translate(longueur/2.5 - 30, 90 - hauteur/2 +7.5, 0);
+    s.addChild(fenetres[3]);
 
     mur[0].scale(longueur, 90, 10);
     mur[0].translate(0, -90/2 + hauteur/2, 0);
@@ -109,9 +111,17 @@ public class Salle {
     mur[1].translate(0, -hauteur/2 +(hauteur-270)/2, 0);
     s.addChild(mur[1]);
 
-    mur[2].scale(longueur, 90, 10);
-    mur[2].translate(0, 90 - hauteur/2, 0);
-    // s.addChild(mur[2]);
+    mur[2].scale(longueur/6 - 190/2, hauteur, 10);
+    mur[2].translate(-longueur/2 + 30, 0, 0);
+    s.addChild(mur[2]);
+
+    mur[3].scale(30, hauteur, 10);
+    mur[3].translate(longueur/2 - 15, 0, 0);
+    s.addChild(mur[3]);
+
+    mur[4].scale((longueur- 810)/2, hauteur, 10);
+    mur[4].translate(220, 0, 0);
+    s.addChild(mur[4]);
 
     s.rotateY(PI/2);
     s.translate(largeur/2, 0, 0);
