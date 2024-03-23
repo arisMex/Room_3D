@@ -1,5 +1,5 @@
 # infographie_projet
 
-![Demo](./Data/images/demo.mp4)
+![Demo](./Data/images/amc.png)
 
 
