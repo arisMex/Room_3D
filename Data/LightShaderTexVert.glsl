@@ -19,11 +19,11 @@ varying vec3 ecPosition;
 varying vec2 uv;
 
 void main() {
-    gl_Position   = transform * position;
-    ecPosition    = vec3(modelview * position);
-    ecNormal      = normalize(normalMatrix * normal);
-    vertEmissive  = emissive;
-    vertColor     = color;
-    vertShininess = shininess;
-    uv            = texCoord;
+  gl_Position   = transform * position;
+  ecPosition    = vec3(modelview * position);
+  ecNormal      = normalize(normalMatrix * normal);
+  vertEmissive  = emissive;
+  vertColor     = color;
+  vertShininess = shininess;
+  uv            = texCoord;
 }

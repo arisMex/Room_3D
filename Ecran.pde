@@ -68,7 +68,6 @@ class Ecran {
     s.addChild(ecran);
 
     dos.scale(L+e, l+e, e);
-    //dos.translate(0, 0, 0);
     s.addChild(dos);
     
         inter.scale(L/3, l/2, e);

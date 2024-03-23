@@ -52,7 +52,7 @@ class Cube {
     s.beginShape(QUADS);
     s.shininess(200.0);
     s.emissive(0, 0, 0);
-    s.normal(0, 0, 1);
+    s.normal(1, 1, 1);
     s.noStroke();
 
     // Top

@@ -39,19 +39,19 @@ class Table {
     PShape[] legs  =new PShape[4];
     
     legs[0] = getLeg();
-    legs[0].translate(L/2-2*e, H/2 + e, l/2-2*e);
+    legs[0].translate(L/2-2*e, H/2 , l/2-2*e);
     s.addChild(legs[0]);
     
     legs[1] = getLeg();
-    legs[1].translate(-L/2+2*e, H/2 + e, l/2-2*e);
+    legs[1].translate(-L/2+2*e, H/2, l/2-2*e);
     s.addChild(legs[1]);
     
     legs[2] = getLeg();
-    legs[2].translate(-L/2+2*e, H/2 + e, -l/2+2*e);
+    legs[2].translate(-L/2+2*e, H/2, -l/2+2*e);
     s.addChild(legs[2]);
     
     legs[3] = getLeg();
-    legs[3].translate(L/2-2*e, H/2 + e, -l/2+2*e);
+    legs[3].translate(L/2-2*e, H/2 , -l/2+2*e);
     s.addChild(legs[3]);
     
 

@@ -29,6 +29,7 @@ class RangeeTables {
     PShape[] uc  =new PShape[nbUC];
     PShape[] ecrans  =new PShape[nbUC];
     PShape[] claviers  =new PShape[nbUC];
+    PShape[] souris  =new PShape[nbUC];
     PShape[] chaises  =new PShape[nbTables*2];
 
 
@@ -56,6 +57,10 @@ class RangeeTables {
       claviers[i].translate(0, -2, -l/5 + random(-l/10, l/10));
       claviers[i].rotateY(random(-PI/20, PI/20));
 
+      souris[i]  = (new Souris(10, 6, 2 )).getSouris();
+      souris[i].translate(0, -6, -l/5 + random(-l/10, l/10));
+      souris[i].rotateY(random(-PI/20, PI/20));
+
       ecrans[i].translate(0, -31+e, l/3 + random(-l/10, l/30));
       ecrans[i].rotateY(random(-PI/30, PI/30));
     }
@@ -80,6 +85,17 @@ class RangeeTables {
     s.addChild(claviers[3]);
     claviers[4].translate(L+ 22 + L/10, 0, 0);
     s.addChild(claviers[4]);
+
+    souris[0].translate(-L/4 - 22, 3, 0);
+    s.addChild(souris[0]);
+    souris[1].translate(3/2*L+10, 3, 0);
+    s.addChild(souris[1]);
+    souris[2].translate(L/2 +15, 3, 0);
+    s.addChild(souris[2]);
+    souris[3].translate( 0, 3, 0);
+    s.addChild(souris[3]);
+    souris[4].translate(2*L - L/2 + 15 , 3, 0);
+    s.addChild(souris[4]);
 
     ecrans[0].translate(L- 22 - L/10, 0, 0);
     s.addChild(ecrans[0]);

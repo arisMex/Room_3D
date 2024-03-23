@@ -32,7 +32,7 @@ class Tableau {
 
   PShape getGrandTab() {
     PShape[] cad  =new PShape[4];
-    PShape plaque = (new Cube(texTbleau)).getCube();
+    PShape plaque = (new Cube(texTbleauMil)).getCube();
     PShape porteCr = (new Cube(textureChaise)).getCube();
 
     for (int i = 0; i < 4; ++i) {
