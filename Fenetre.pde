@@ -70,19 +70,19 @@ class Fenetre {
     
     vitres[1].scale(l/3, h/4, eZ);
     vitres[1].translate(-l/3 - e/2, -h*3/8 - e/2 , 0);
-    s.addChild(vitres[1]);
+    //s.addChild(vitres[1]);
     
     vitres[2].scale(l*2/3, h/4, eZ);
     vitres[2].translate(l/6, -h*3/8 - e/2 , 0);
-    s.addChild(vitres[2]);
+    //s.addChild(vitres[2]);
     
     vitres[3].scale(l/3, h*2/3+ 3*e, eZ);
     vitres[3].translate(l/3 ,  h/12+e*1.5 , 0);
-    s.addChild(vitres[3]);
+    //s.addChild(vitres[3]);
     
     vitres[0].scale(l*2/3, h*2/3+3*e, eZ);
     vitres[0].translate(-l/6, h/12+1.5*e , 0);
-    s.addChild(vitres[0]);
+    //s.addChild(vitres[0]);
 
 
     return s;

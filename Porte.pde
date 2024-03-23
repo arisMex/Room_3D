@@ -22,6 +22,7 @@ class Porte {
   PShape getPorte() {
     PShape cadre = getCadre();
     PShape prt = getPrt();
+    prt.translate(0, -5);
 
     PShape s = createShape(GROUP);
     s.addChild(cadre);
