@@ -1,5 +1,5 @@
 
-<img src="./Data/images/demo1.png" alt="Demo 1" style="width: 50%; margin-left:10px"><img src="./Data/images/demo2.png" alt="Demo 2" style="width: 50%;">
+<img src="./Data/images/demo1.png" alt="Demo 1" style="width: 50%; margin-right:10px"><img src="./Data/images/demo2.png" alt="Demo 2" style="width: 50%;">
 
 
 
