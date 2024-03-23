@@ -1,7 +1,6 @@
-<div style="display: flex;">
+
     <img src="./Data/images/demo1.png" alt="Demo 1" style="width: 50%;">
     <img src="./Data/images/demo2.png" alt="Demo 2" style="width: 50%;">
-</div>
 
 
 # Description du projet
