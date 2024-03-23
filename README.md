@@ -1,6 +1,6 @@
 
-    <img src="./Data/images/demo1.png" alt="Demo 1" style="width: 50%;">
-    <img src="./Data/images/demo2.png" alt="Demo 2" style="width: 50%;">
+<img src="./Data/images/demo1.png" alt="Demo 1" style="width: 50%;"><img src="./Data/images/demo2.png" alt="Demo 2" style="width: 50%;">
+
 
 
 # Description du projet
