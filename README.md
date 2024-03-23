@@ -1,6 +1,7 @@
 # Description du projet
 
-<<<<<<< HEAD
+![Nom de la vidéo](./Data/images/demo.mp4)
+
 Ce projet consiste à créer une modélisation en 3D d'une salle de travaux pratiques (TP) à l'aide de Processing, un langage de programmation et un environnement de développement intégré (IDE) utilisé pour créer des animations et des graphiques interactifs. La salle de TP sera conçue avec des textures, des lumières et d'autres éléments pour rendre la modélisation aussi réaliste que possible.
 
 La modélisation de la salle de TP sera réalisée en utilisant des primitives géométriques telles que des cubes, des sphères, des cylindres, etc., pour représenter les différents éléments de la salle, tels que les tables, les chaises, les ordinateurs, les écrans, etc. Les textures seront utilisées pour ajouter des détails et des couleurs réalistes aux objets, tandis que les lumières seront utilisées pour simuler l'éclairage de la salle.
