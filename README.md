@@ -1,5 +1,8 @@
+<div style="display: flex;">
+    <img src="./Data/images/demo1.png" alt="Demo 1" style="width: 50%; margin-right: 20px;">
+    <img src="./Data/images/demo2.png" alt="Demo 2" style="width: 50%;">
+</div>
 
-<img src="./Data/images/demo1.png" alt="Demo 1" style="width: 50%; margin-right: 20px;"><img src="./Data/images/demo2.png" alt="Demo 2" style="width: 50%;">
 
 
 
