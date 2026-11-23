@@ -1,132 +1,159 @@
-PShape salle;
+/*
+ * Salle de TP en 3D — Processing (P3D)
+ *
+ * Toute la géométrie statique est fusionnée par MeshBuilder en un lot par
+ * matériau : la scène complète se dessine en quelques dizaines d'appels.
+ *
+ * Commandes : ZQSD / WASD / flèches = se déplacer, souris (glisser) = tourner,
+ * Espace / Ctrl = monter / descendre, Maj = courir, clic droit ou L = lumière,
+ * + / - = luminosité, H = aide, R = réinitialiser la caméra, P = capture d'écran.
+ *
+ * Mode capture (régénère les images du README) :
+ *   processing-java --sketch=<dossier> --run --capture
+ */
 
+// Dimensions de la salle (cm) : x = largeur, y = hauteur (vers le bas), z = longueur.
+// Le sol est en y = 0, le plafond en y = -HAUTEUR.
+final float LARGEUR = 594;
+final float LONGUEUR = 978;
+final float HAUTEUR = 278;
+final float EP_MUR = 10;
 
-PShader colorShader;
-PShader[] shaders;
-PImage tex, texTable, texSol, texPlafond, texTbleau, texTbleauMil, texPorte, texUcFace, texMac, texUcDos, texUcCote, texClavier, textureChaise, texDosEcran, texPlinthe, texExtr, texSouris, texRadiateur;
-PImage[] fondEcran;
-Light light;
+Textures textures;
+Materiaux mat;
+Eclairage eclairage;
+CameraFPS cam;
+PShader shaderScene;
 
-float rayon = 200;
-float theta = 0;
-float phi = 0;
-float camX = 0;
-float camY = 0;
-float camZ = 0;
-PVector move ;
+PShape scene;          // géométrie statique fusionnée
+PImage imgChargement;
 
-float l = 80;
-float L= 160;
-float h = 73;
-float e = 3;
-boolean lumiere;
+boolean afficherAide = true;
+float exposition = 1.0;   // luminosité globale, réglable avec + / -
+boolean modeCapture = false;
+int etapeCapture = 0;
 
-int longueur =978, largeur= 594, hauteur= 278 ;
-PImage img;
-
-void setup() {
-  size(1000, 800, P3D);
-  tex = loadImage("Data/images/mur.jpg");
-  texTable = loadImage("Data/images/table.jpg");
-  texSol = loadImage("Data/images/sol.jpg");
-  texPlafond = loadImage("Data/images/toit.jpeg");
-  texTbleau = loadImage("Data/images/tableau.png");
-  texTbleauMil = loadImage("Data/images/tabMil.png");
-
-  texPorte = loadImage("Data/images/texturePorte.png");
-  texUcFace= loadImage("Data/images/ucFace.png");
-  texUcDos =loadImage("Data/images/ucDos.png");
-  texUcCote = loadImage("Data/images/ucCote.png");
-  texClavier = loadImage("Data/images/clavier.png");
-  textureChaise = loadImage("Data/images/chaise.png");
-  texDosEcran = loadImage("Data/images/dosEcran.png");
-  texPlinthe = loadImage("Data/images/plinthe.png");
-  texExtr = loadImage("Data/images/exter.jpg");
-  texSouris = loadImage("Data/images/souris.png");
-  texRadiateur = loadImage("Data/images/radiateur.png");
-  texMac = loadImage("Data/images/amc.png");
-
-
-  fondEcran = new PImage[4];
-  fondEcran[0] = loadImage("Data/images/fe1.jpg");
-  fondEcran[1] = loadImage("Data/images/f2.png");
-  fondEcran[2] = loadImage("Data/images/f3.png");
-  fondEcran[3] = loadImage("Data/images/f4.jpg");
-
-  img = loadImage("Data/images/loading.gif");
-  imageMode(CENTER);
-  image(img, width/2, height/2, width, height);
-
-  textureMode(NORMAL);
-  salle = (new Salle(longueur, largeur, hauteur, tex, texSol, texPlafond)).getSalle();
-  move = new PVector(0, 0, 0);
-
-
-  colorShader = loadShader("Data/LightShaderTexFrag1.glsl", "Data/LightShaderTexVert1.glsl");
-
-  shaders = new PShader[2];
-  shaders[0] = loadShader("Data/LightShaderTexVert.glsl");
-  shaders[1] = loadShader("Data/LightShaderTexFrag.glsl");
-  light = new Light();
+void settings() {
+  modeCapture = args != null && java.util.Arrays.asList(args).contains("--capture");
+  if (modeCapture) size(1920, 1080, P3D);
+  else size(1280, 720, P3D);
+  smooth(8);
+  PJOGL.setIcon("Data/images/tableau.png");
 }
 
+void setup() {
+  surface.setTitle("Salle de TP 3D");
+  imgChargement = loadImage("Data/images/loading.gif");
+  frameRate(60);
+}
+
+// La première image affiche l'écran de chargement, la scène est construite à la seconde.
+boolean initialise = false;
+
+void initialiser() {
+  randomSeed(7);
+  textureMode(NORMAL);
+  textureWrap(REPEAT);
+  ((PGraphicsOpenGL) g).textureSampling(5); // trilinéaire
+
+  textures = new Textures();
+  mat = new Materiaux(textures);
+  eclairage = new Eclairage();
+  cam = new CameraFPS();
+
+  shaderScene = loadShader("Data/shaders/eclairage.frag", "Data/shaders/eclairage.vert");
+
+  int t0 = millis();
+  MeshBuilder mb = new MeshBuilder();
+  new Salle().construire(mb);
+  scene = mb.build();
+  println("Scène : " + mb.nbFaces + " faces, " + scene.getChildCount()
+    + " lots (" + (millis() - t0) + " ms)");
+  initialise = true;
+}
 
 void draw() {
-  background(0);
-  bougerCamera();
-  camera(camX + move.x, camY + move.y, camZ + move.z, move.x, move.y, move.z, 0, 1, 0);
-
-
-  if (lumiere) {
-    light.setLight();
+  if (!initialise) {
+    if (frameCount == 1) {
+      background(0);
+      imageMode(CENTER);
+      image(imgChargement, width/2, height/2, height * 4/3.0, height);
+      return;
+    }
+    initialiser();
   }
-  pushMatrix();
-  translate(largeur/2, 0, 0);
 
-  shader(colorShader);
+  if (modeCapture) preparerCapture(etapeCapture);
+  else cam.mettreAJour(1.0 / max(frameRate, 1));
 
-  shape(salle);
-  popMatrix();
+  background(18);
+  cam.appliquer();
+  eclairage.appliquer();
+
+  shader(shaderScene);
+  shaderScene.set("exposition", exposition);
+  shaderScene.set("resolution", (float) width, (float) height);
+  shape(scene);
+  shape(eclairage.plafonniers());
+  resetShader();
+
+  if (modeCapture) {
+    if (terminerCapture(etapeCapture)) etapeCapture++;
+    return;
+  }
+  if (afficherAide) dessinerAide();
+}
+
+void dessinerAide() {
+  hint(DISABLE_DEPTH_TEST);
+  noLights();
+  camera();
+  perspective();
+  noStroke();
+  fill(0, 160);
+  rect(12, 12, 310, 186, 8);
+  fill(255);
+  textSize(13);
+  textAlign(LEFT, TOP);
+  text("ZQSD / WASD / flèches : se déplacer\n"
+    + "Souris (glisser) : tourner\n"
+    + "Espace / Ctrl : monter / descendre\n"
+    + "Maj : courir   Molette : avancer/reculer\n"
+    + "Ctrl + molette : zoom\n"
+    + "Clic droit / L : lumière " + (eclairage.allume ? "(allumée)" : "(éteinte)") + "\n"
+    + "+ / - : luminosité (" + nf(exposition * 100, 0, 0) + " %)\n"
+    + "P : capture   R : reset   H : masquer l'aide\n"
+    + nf(frameRate, 0, 0) + " FPS", 24, 22);
+  hint(ENABLE_DEPTH_TEST);
 }
 
 void mousePressed() {
-  if (mouseButton == RIGHT) //allumer/eteindre la lumiere
-    lumiere= !lumiere;
+  if (mouseButton == RIGHT && eclairage != null) eclairage.basculer();
 }
 
-void bougerCamera() {
-  float sensitivity = 0.01;
-  float vitesse = 2;
+void mouseDragged() {
+  if (cam != null && mouseButton == LEFT) cam.tourner(mouseX - pmouseX, mouseY - pmouseY);
+}
 
-  // Rotation de la caméra avec la souris
-  if (mousePressed) {
-    theta += sensitivity * (pmouseX - mouseX);
-    phi += sensitivity * (pmouseY - mouseY);
-  }
+// Molette : avancer / reculer. Ctrl + molette : zoom (champ de vision).
+void mouseWheel(MouseEvent ev) {
+  if (cam == null) return;
+  if (ev.isControlDown()) cam.zoomer(ev.getCount());
+  else cam.avancerMolette(-ev.getCount());
+}
 
-  rayon = constrain(rayon, 200, 1000);
+void keyPressed() {
+  if (cam == null) return;
+  cam.touche(key, keyCode, true);
+  char k = Character.toLowerCase(key);
+  if (k == 'l') eclairage.basculer();
+  else if (k == 'h') afficherAide = !afficherAide;
+  else if (k == 'r') cam.reinitialiser();
+  else if (k == 'p') saveFrame("captures/capture-####.png");
+  else if (k == '+' || k == '=') exposition = min(exposition + 0.1, 2.0);
+  else if (k == '-') exposition = max(exposition - 0.1, 0.3);
+}
 
-  // Déplacement de la caméra avec le clavier
-  if (keyPressed) {
-    if (key == 'w' || key == 'W' || keyCode == UP) {
-      move.z -=  cos(theta) *vitesse;
-      move.x -=  sin(theta)*vitesse;
-      move.y -= sin(phi)*vitesse;
-    } else if (key == 's' || key == 'S' ||keyCode == DOWN) {
-      move.z +=  cos(theta) *vitesse;
-      move.x +=  sin(theta)*vitesse;
-      move.y += sin(phi)*vitesse;
-    } else if (key == 'q' || key == 'Q' || keyCode == LEFT) {
-      move.z +=  sin(theta) *vitesse;
-      move.x -=  cos(theta)*vitesse;
-    } else if (key == 'd' || key == 'D' || keyCode == RIGHT) {
-      move.z -=  sin(theta) *vitesse;
-      move.x +=  cos(theta)*vitesse;
-    }
-  }
-
-  // Conversion des coordonnées sphériques en coordonnées cartésiennes
-  camX = rayon * cos(phi) * sin(theta);
-  camY = rayon * sin(phi);
-  camZ = rayon * cos(phi) * cos(theta);
+void keyReleased() {
+  if (cam != null) cam.touche(key, keyCode, false);
 }
