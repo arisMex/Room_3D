@@ -1,206 +1,245 @@
-public class Salle {
-  int longueur, largeur, hauteur;
-  PImage texMur, texSol, texPlafond;
+// Assemble la salle : murs, sol, plafond, ouvertures et mobilier.
+// Repère : origine au centre du sol, x vers la droite (côté fenêtres),
+// y vers le bas, z vers le tableau.
+class Salle {
+  final float W = LARGEUR, D = LONGUEUR, H = HAUTEUR, EP = EP_MUR;
 
-  // Constructeur de la salle
-  public Salle(int lg, int lr, int ht, PImage txMur, PImage txSol, PImage txPlaf) {
-    this.longueur = lg;
-    this.largeur = lr;
-    this.hauteur = ht;
-    this.texMur = txMur;
-    this.texSol = txSol;
-    this.texPlafond = txPlaf;
+  // Fenêtres du mur droit (x = +W/2) : centres en z, largeur, allège, hauteur
+  final float[] FENETRES_Z = { -361, -74, 126, 326 };
+  final float FEN_L = 190, FEN_ALLEGE = 90, FEN_H = 170;
+
+  // Portes : position et largeur de l'ouverture (battant 92 + huisserie 2 × 8)
+  final float PORTE_FOND_X = LARGEUR / 3, PORTE_GAUCHE_Z = LONGUEUR / 3, PORTE_TROU = 110;
+
+  // Rangées d'élèves
+  final int NB_RANGEES = 4, NB_TABLES = 3;
+  final float TABLE_L = 160, TABLE_P = 80, TABLE_H = 73;
+  final float RANGEES_X = -40;
+  final float[] RANGEES_Z = { -360, -210, -60, 90 };
+
+  void construire(MeshBuilder mb) {
+    construireEnveloppe(mb);
+    construireMurFenetres(mb);
+    construireOuvertures(mb);
+    construireRangees(mb);
+    construireBureauProf(mb);
   }
 
+  // ---- Sol, plafond, murs pleins, plinthes ---------------------------------
+  void construireEnveloppe(MeshBuilder mb) {
+    // sol / plafond : seule la face visible est générée
+    mb.push();
+    mb.translate(0, 1, 0);
+    mb.box(W, 2, D, null, MeshBuilder.HAUT, mat.sol);
+    mb.pop();
+    mb.push();
+    mb.translate(0, -H - 1, 0);
+    mb.box(W, 2, D, null, MeshBuilder.BAS, mat.plafond);
+    mb.pop();
 
-  PShape getSalle() {
+    // mur du tableau (z = +D/2), mur du fond (z = -D/2), mur gauche (x = -W/2)
+    mb.push();
+    mb.translate(0, -H / 2, D / 2 + EP / 2);
+    mb.box(W, H, EP, null, MeshBuilder.AVANT, mat.mur);
+    mb.pop();
+    mb.push();
+    mb.translate(0, -H / 2, -D / 2 - EP / 2);
+    mb.box(W, H, EP, null, MeshBuilder.ARRIERE, mat.mur);
+    mb.pop();
+    mb.push();
+    mb.translate(-W / 2 - EP / 2, -H / 2, 0);
+    mb.box(EP, H, D, null, MeshBuilder.DROITE, mat.mur);
+    mb.pop();
 
-    PShape pc = (new PC( 40, 30, 1)).getPc();
-    pc.rotateY(-PI*2/3);
-    pc.translate(0, hauteur/4+ 5, longueur/5 - 30 );
-
-    PShape tableau = (new Tableau(120, 1.5)).getTableau() ;
-    tableau.translate(0, 0, longueur/2-2);
-
-
-
-    PShape tables  = (new RangeeTables(3, 4, l, L, h, e, texTable)).getRangees();
-    tables.translate(-largeur/3, hauteur/2-h, -longueur/2.5);
-    PShape table  = (new Table( l, L, h, e, texTable)).getTable();
-    table.translate(0, hauteur/2-h+10, longueur/6+5);
-    PShape chaise = (new Chaise(40, 44, 84, 2, textureChaise)).getChaise();
-    chaise.rotateY(PI + PI/10);
-    chaise.translate(0, hauteur/3, longueur/5 + 15 );
-
-    PShape radiateurs  = (new Radiateur( 150, 100, 10, texRadiateur)).getRadiateurs(1);
-    radiateurs.rotateY(PI/2);
-    radiateurs.translate(largeur/2-20, hauteur/3, -longueur/3 - 30);
-    PShape radiateurs2  = (new Radiateur( 150, 100, 10, texRadiateur)).getRadiateurs(3);
-    radiateurs2.rotateY(PI/2);
-    radiateurs2.translate(largeur/2-20, hauteur/3, longueur/4);
-
-    PShape g_ecran  = (new GEcran(180, 120, 20, 10, texUcFace, texUcDos, texUcCote)).getEcran();
-    g_ecran.rotateY(PI/6);
-    g_ecran.translate(largeur/3.5, 0, longueur*4/10);
-
-    PShape s = createShape(GROUP);
-    s.addChild(tableau);
-    s.addChild(getMurFond());
-    s.addChild(getMurG());
-    s.addChild(getMurD());
-    s.addChild(getMurFront());
-    s.addChild(getSol());
-    s.addChild(getPlafond());
-    s.addChild(tables);
-    s.addChild(table);
-    s.addChild(g_ecran);
-    s.addChild(radiateurs);
-    s.addChild(radiateurs2);
-    s.addChild(chaise);
-    s.addChild(pc);
-    s.translate(-largeur/2, 0, 0);
-    return s;
+    // plinthes et goulotte, interrompues au niveau des portes
+    float ep = 1.2;
+    float[][] trouFond = { { PORTE_FOND_X - PORTE_TROU / 2, PORTE_FOND_X + PORTE_TROU / 2 } };
+    float[][] trouGauche = { { PORTE_GAUCHE_Z - PORTE_TROU / 2, PORTE_GAUCHE_Z + PORTE_TROU / 2 } };
+    float[][] aucun = {};
+    bande(mb, false, D / 2 - ep / 2, -W / 2, W / 2, aucun, -6, 12, ep, mat.plinthe);
+    bande(mb, false, -D / 2 + ep / 2, -W / 2, W / 2, trouFond, -6, 12, ep, mat.plinthe);
+    bande(mb, true, -W / 2 + ep / 2, -D / 2, D / 2, trouGauche, -6, 12, ep, mat.plinthe);
+    bande(mb, true, W / 2 - ep / 2, -D / 2, D / 2, aucun, -6, 12, ep, mat.plinthe);
+    bande(mb, true, -W / 2 + 2, -D / 2, D / 2, trouGauche, -95, 10, 4, mat.appui);
   }
 
-  PShape getMurFond() {
-    PShape mur = (new Cube(texMur)).getCube();
-    PShape p = (new Cube(texPlinthe)).getCube();
-    PShape porte = (new Porte(205, 92, 10, 10, texPorte)).getPorte();
-    PShape s = createShape(GROUP);
-    p.scale(largeur, hauteur/20, 1);
-    p.translate(0, hauteur/2 - hauteur/40, -longueur/2 + 2);
-    porte.translate(largeur/3, (hauteur -205+e)/2, -longueur/2+5);
-    s.addChild(porte);
-    mur.scale(largeur, hauteur, 2);
-    mur.beginShape(QUADS);
-    mur.translate(0, 0, -longueur/2);
-    mur.texture(texMur);
-    mur.endShape(CLOSE);
-
-    s.addChild(mur);
-    s.addChild(p);
-    return s;
-  }
-
-  PShape getMurFront() {
-    PShape mur = (new Cube(texMur)).getCube();
-    PShape p = (new Cube(texPlinthe)).getCube();
-
-    PShape s = createShape(GROUP);
-    p.scale(largeur, hauteur/20, 1);
-    p.translate(0, hauteur/2 - hauteur/40, longueur/2 - 2);
-    mur.scale(largeur, hauteur, 2);
-    mur.translate(0, 0, longueur/2);
-
-    s.addChild(mur);
-    s.addChild(p);
-    return s;
-  }
-
-  PShape getMurG() {
-    PShape porte = (new Porte(205, 92, 10, 10, texPorte)).getPorte();
-    porte.translate(-longueur/3, (hauteur -205+e)/2, 5);
-    PShape p = (new Cube(texPlinthe)).getCube();
-
-    PShape mur = (new Cube(texMur)).getCube();
-    PShape s = createShape(GROUP);
-    p.scale(longueur, hauteur/20, 12);
-    p.translate(0, hauteur/2 - hauteur/40, -2);
-    s.addChild(p);
-
-    mur.scale(longueur, hauteur, 2);
-
-    s.addChild(porte);
-    s.addChild(mur);
-    s.rotateY(PI/2);
-    s.translate(-largeur/2, 0, 0);
-    return s;
-  }
-
-  PShape getMurD() {
-    PShape[] mur = new PShape[7];
-    PShape[] fenetres  = new PShape[4];
-    PShape p = (new Cube(texPlinthe)).getCube();
-
-    for (int i = 0; i < mur.length; i++) {
-      mur[i] = (new Cube(texMur)).getCube();
+  // Bande horizontale le long d'un mur (plinthe, goulotte) avec des interruptions.
+  // leLongDeZ : la bande suit l'axe z (murs latéraux) ; sinon l'axe x.
+  void bande(MeshBuilder mb, boolean leLongDeZ, float fixe, float debut, float fin,
+    float[][] trous, float y, float h, float ep, Materiau mt) {
+    float a = debut;
+    for (int i = 0; i <= trous.length; i++) {
+      float b = i < trous.length ? trous[i][0] : fin;
+      if (b - a > 0.5) {
+        float c = (a + b) / 2, lg = b - a;
+        mb.push();
+        if (leLongDeZ) {
+          mb.translate(fixe, y, c);
+          mb.box(ep, h, lg, mt);
+        } else {
+          mb.translate(c, y, fixe);
+          mb.box(lg, h, ep, mt);
+        }
+        mb.pop();
+      }
+      if (i < trous.length) a = trous[i][1];
     }
-    for (int i = 0; i < fenetres.length; i++) {
-      fenetres[i] = (new Fenetre(170, 190, texPorte)).getFenetre();
+  }
+
+  // ---- Mur droit percé de fenêtres, vue extérieure -------------------------
+  void construireMurFenetres(MeshBuilder mb) {
+    float x = W / 2 + EP / 2;
+    float yBasFen = -FEN_ALLEGE, yHautFen = -FEN_ALLEGE - FEN_H;
+
+    // allège et linteau sur toute la longueur
+    blocMur(mb, x, 0, yBasFen, -D / 2, D / 2);
+    blocMur(mb, x, yHautFen, -H, -D / 2, D / 2);
+    // trumeaux entre les fenêtres
+    float[] z = FENETRES_Z.clone();
+    java.util.Arrays.sort(z);
+    float debut = -D / 2;
+    for (float zc : z) {
+      blocMur(mb, x, yBasFen, yHautFen, debut, zc - FEN_L / 2);
+      debut = zc + FEN_L / 2;
+    }
+    blocMur(mb, x, yBasFen, yHautFen, debut, D / 2);
+
+    for (float zc : FENETRES_Z) {
+      mb.push();
+      mb.translate(x, (yBasFen + yHautFen) / 2, zc);
+      mb.rotateY(HALF_PI);
+      new Fenetre(FEN_L, FEN_H).construire(mb);
+      mb.pop();
+
+      // radiateur sous chaque fenêtre
+      mb.push();
+      mb.translate(W / 2 - 6, 0, zc);
+      mb.rotateY(HALF_PI);
+      new Radiateur(150, 58).construire(mb);
+      mb.pop();
     }
 
-    PShape s = createShape(GROUP);
-
-    p.scale(longueur, hauteur/20, 12);
-    p.translate(0, hauteur/2 - hauteur/40, -2);
-    s.addChild(p);
-
-    fenetres[0].translate(-longueur/3, 90 - hauteur/2 +7.5, -1);
-    s.addChild(fenetres[0]);
-    fenetres[1].translate(-longueur/3 + 190 +10, 90 - hauteur/2 +7.5, -1);
-    s.addChild(fenetres[1]);
-    fenetres[2].translate(-longueur/3 + 2*190 +20, 90 - hauteur/2 +7.5, -1);
-    s.addChild(fenetres[2]);
-    fenetres[3].translate(longueur/2.5 - 30, 90 - hauteur/2 +7.5, -1);
-    s.addChild(fenetres[3]);
-
-    mur[0].scale(longueur, 90, 10);
-    mur[0].translate(0, -90/2 + hauteur/2, -1);
-    s.addChild(mur[0]);
-
-    mur[1].scale(longueur, hauteur-270, 10);
-    mur[1].translate(0, -hauteur/2 +(hauteur-270)/2, -1);
-    s.addChild(mur[1]);
-
-    mur[2].scale(longueur/6 - 190/2, hauteur, 11);
-    mur[2].translate(-longueur/2 + 30, 0, -1);
-    s.addChild(mur[2]);
-
-    mur[3].scale(30, hauteur, 10);
-    mur[3].translate(longueur/2 - 15, 0, -1);
-    s.addChild(mur[3]);
-
-    mur[4].scale((longueur- 800)/2, hauteur, 40);
-    mur[4].translate(218, 0, -15);
-    s.addChild(mur[4]);
-    //texture exter
-    mur[5] = (new Cube(texExtr)).getCube();
-    mur[5].scale((longueur)*8, hauteur*8, 10);
-    mur[5].translate(1000, -200, 1500);
-    s.addChild(mur[5]);
-    
-    mur[6] = (new Cube(texExtr)).getCube();
-    mur[6].scale((longueur)*8, hauteur*8, 10);
-    mur[6].translate(-longueur*8 +1000, -200, 1500);
-    s.addChild(mur[6]); 
-    
-
-    s.rotateY(PI/2);
-    s.translate(largeur/2, 0, 0);
-    return s;
+    // paysage extérieur (auto-illuminé)
+    mb.push();
+    mb.translate(W / 2 + 420, -420, 0);
+    mb.rotateY(HALF_PI);
+    mb.plan(1700, 1940, mat.exterieur);
+    mb.pop();
   }
 
-  PShape getMurDroite() {
-    PShape mur = (new Cube(texMur)).getCube();
-    mur.scale(longueur, hauteur, 2);
-    mur.rotateY(PI/2);
-    mur.translate(largeur/2, 0, 0);
-    return mur;
+  void blocMur(MeshBuilder mb, float x, float y0, float y1, float z0, float z1) {
+    if (abs(z1 - z0) < 0.01 || abs(y1 - y0) < 0.01) return;
+    mb.push();
+    mb.translate(x, (y0 + y1) / 2, (z0 + z1) / 2);
+    mb.box(EP, abs(y1 - y0), abs(z1 - z0), mat.mur);
+    mb.pop();
   }
 
-  PShape getSol() {
-    PShape mur = (new Cube(texSol)).getCube();
-    mur.scale(largeur, longueur, 2);
-    mur.rotateX(PI/2);
-    mur.translate(0, hauteur/2, 0);
-    return mur;
+  // ---- Portes et tableaux ---------------------------------------------------
+  void construireOuvertures(MeshBuilder mb) {
+    // porte du fond, tournée vers la salle (+z)
+    mb.push();
+    mb.translate(PORTE_FOND_X, 0, -D / 2);
+    mb.rotateY(PI);
+    new Porte(205, 92).construire(mb);
+    mb.pop();
+
+    // porte du mur gauche, près du tableau, tournée vers +x
+    mb.push();
+    mb.translate(-W / 2, 0, PORTE_GAUCHE_Z);
+    mb.rotateY(-HALF_PI);
+    new Porte(205, 92).construire(mb);
+    mb.pop();
+
+    // tableaux sur le mur avant
+    mb.push();
+    mb.translate(RANGEES_X, -150, D / 2);
+    new Tableau().construire(mb);
+    mb.pop();
+
+    // grand écran sur pied à droite du tableau, orienté vers la classe
+    mb.push();
+    mb.translate(W / 2 - 75, 0, D / 2 - 140);
+    mb.rotateY(PI / 4);
+    new Ecran(170, 96, 110, true).construire(mb);
+    mb.pop();
   }
 
-  PShape getPlafond() {
-    PShape mur = (new Cube(texPlafond, true)).getCube();
-    mur.scale(largeur, longueur, 2);
-    mur.rotateX(PI/2);
-    mur.translate(0, -hauteur/2, 0);
-    return mur;
+  // ---- Postes des élèves ------------------------------------------------------
+  void construireRangees(MeshBuilder mb) {
+    for (int r = 0; r < NB_RANGEES; r++) {
+      for (int t = 0; t < NB_TABLES; t++) {
+        float tx = RANGEES_X + (t - (NB_TABLES - 1) / 2.0) * TABLE_L;
+        float tz = RANGEES_Z[r];
+        mb.push();
+        mb.translate(tx, 0, tz);
+        new Table(TABLE_L, TABLE_P, TABLE_H, 3).construire(mb);
+        posteEleve(mb, -TABLE_L / 4);
+        posteEleve(mb, TABLE_L / 4);
+        mb.pop();
+      }
+    }
+  }
+
+  // Un poste : écran, UC, clavier, souris et chaise. Origine = centre de la table.
+  void posteEleve(MeshBuilder mb, float x) {
+    mb.push();
+    mb.translate(x, -TABLE_H, 0);
+
+    mb.push();
+    mb.translate(-4, 0, TABLE_P / 2 - 20);
+    mb.rotateY(random(-0.08, 0.08));
+    new Ecran(53, 30, 9, false).construire(mb);
+    mb.pop();
+
+    mb.push();
+    mb.translate(30, 0, TABLE_P / 2 - 18);
+    new UC().construire(mb);
+    mb.pop();
+
+    mb.push();
+    mb.translate(-4 + random(-2, 2), 0, -TABLE_P / 2 + 20 + random(-3, 3));
+    mb.rotateY(random(-0.06, 0.06));
+    new Clavier().construire(mb);
+    mb.pop();
+
+    mb.push();
+    mb.translate(27, 0, -TABLE_P / 2 + 20 + random(-2, 2));
+    mb.rotateY(random(-0.1, 0.1));
+    new Souris().construire(mb);
+    mb.pop();
+    mb.pop();
+
+    mb.push();
+    mb.translate(x + random(-5, 5), 0, -TABLE_P / 2 - 18 - random(0, 12));
+    mb.rotateY(random(-0.15, 0.15));
+    new Chaise().construire(mb);
+    mb.pop();
+  }
+
+  // ---- Bureau de l'enseignant (face aux élèves) -----------------------------
+  void construireBureauProf(MeshBuilder mb) {
+    mb.push();
+    mb.translate(-40, 0, 245);
+    new Table(TABLE_L, TABLE_P, TABLE_H + 2, 3).construire(mb);
+
+    mb.push();
+    mb.translate(-20, -TABLE_H - 2, 8);
+    mb.rotateY(PI + 0.25);
+    new PC().construire(mb);
+    mb.pop();
+
+    mb.push();
+    mb.translate(45, -TABLE_H - 2, 5);
+    mb.rotateY(PI + 0.1);
+    new Souris().construire(mb);
+    mb.pop();
+
+    mb.push();
+    mb.translate(-10, 0, TABLE_P / 2 + 30);
+    mb.rotateY(PI + 0.3);
+    new Chaise().construire(mb);
+    mb.pop();
+    mb.pop();
   }
 }
