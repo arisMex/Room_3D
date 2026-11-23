@@ -1,24 +1,100 @@
-<div style="display: flex;">
-    <img src="./Data/images/demo1.png" alt="Demo 1" style="width: 50%; margin-right: 20px;">
-    <img src="./Data/images/demo2.png" alt="Demo 2" style="width: 50%;">
-</div>
+# Salle de TP en 3D — Processing
 
-
-
+<p align="center">
+  <img src="./Data/images/demo1.png" alt="Vue d'ensemble depuis le fond de la salle" width="49%">
+  <img src="./Data/images/demo2.png" alt="Vue depuis le bureau de l'enseignant" width="49%">
+</p>
+<p align="center">
+  <img src="./Data/images/demo3.png" alt="Lumières éteintes, lumière du jour seule" width="32%">
+  <img src="./Data/images/demo4.png" alt="Poste de travail d'un élève" width="32%">
+  <img src="./Data/images/demo5.png" alt="Côté fenêtres" width="32%">
+</p>
 
 # Description du projet
 
-Ce projet consiste à créer une modélisation en 3D d'une salle de travaux pratiques (TP) à l'aide de Processing, un langage de programmation et un environnement de développement intégré (IDE) utilisé pour créer des animations et des graphiques interactifs. La salle de TP sera conçue avec des textures, des lumières et d'autres éléments pour rendre la modélisation aussi réaliste que possible.
+Modélisation 3D interactive d'une salle de travaux pratiques (TP) réalisée avec
+[Processing](https://processing.org) (moteur P3D). La salle contient 4 rangées de
+tables avec 24 postes complets (écran, unité centrale, clavier, souris, chaise), le
+bureau de l'enseignant avec un ordinateur portable, un grand écran sur pied, des
+tableaux, deux portes, quatre fenêtres donnant sur l'extérieur et des radiateurs.
 
-La modélisation de la salle de TP sera réalisée en utilisant des primitives géométriques telles que des cubes, des sphères, des cylindres, etc., pour représenter les différents éléments de la salle, tels que les tables, les chaises, les ordinateurs, les écrans, etc. Les textures seront utilisées pour ajouter des détails et des couleurs réalistes aux objets, tandis que les lumières seront utilisées pour simuler l'éclairage de la salle.
+Le rendu utilise des textures, un éclairage par pixel (Blinn-Phong) avec six
+plafonniers atténués, la lumière du jour qui entre par les fenêtres, des écrans
+et plafonniers lumineux, et une compression douce des hautes lumières.
 
-Le projet comprendra également des fonctionnalités interactives, telles que la possibilité de déplacer et de manipuler les objets dans la salle, de changer les textures et les couleurs des objets, et de contrôler l'éclairage de la salle.
+## Lancer le projet
 
+Ouvrir `ProjetFinal.pde` dans Processing 4 et lancer le sketch, ou en ligne de commande :
+
+```bash
+processing-java --sketch=/chemin/vers/ProjetFinal --run
+```
+
+> Le dossier du sketch doit s'appeler `ProjetFinal` (nom du fichier principal).
+
+## Commandes
+
+| Action | Touche |
+| --- | --- |
+| Se déplacer | `Z Q S D`, `W A S D` ou flèches |
+| Tourner | glisser avec le clic gauche |
+| Avancer / reculer | molette de la souris |
+| Zoom | `Ctrl` + molette |
+| Monter / descendre | `Espace` / `Ctrl` |
+| Courir | `Maj` |
+| Allumer / éteindre la lumière | clic droit ou `L` |
+| Luminosité | `+` / `-` |
+| Afficher / masquer l'aide | `H` |
+| Réinitialiser la caméra | `R` |
+| Capture d'écran (dossier `captures/`) | `P` |
+
+Les déplacements sont fluides, indépendants du nombre d'images par seconde,
+acceptent plusieurs touches simultanées, et la caméra ne traverse plus les murs.
+
+## Structure du code
+
+| Fichier | Rôle |
+| --- | --- |
+| `ProjetFinal.pde` | Point d'entrée : fenêtre, boucle de rendu, entrées clavier/souris, aide à l'écran |
+| `MeshBuilder.pde` | Construit la géométrie : chaque pavé est transformé puis ajouté au lot de son matériau |
+| `Materiaux.pde` | Matériaux (texture, teinte, répétition, émission, brillance), créés une seule fois |
+| `Textures.pde` | Registre des textures : chargement unique, réduction des images trop grandes |
+| `Salle.pde` | Assemblage de la salle : murs, ouvertures, rangées, bureau de l'enseignant |
+| `Mobilier.pde` | Objets : table, chaise, écran, UC, clavier, souris, portable, radiateur, porte, fenêtre, tableaux |
+| `Eclairage.pde` | Plafonniers, lumière du jour, allumage/extinction |
+| `CameraFPS.pde` | Caméra à la première personne |
+| `Capture.pde` | Mode capture qui régénère les images de ce README |
+| `Data/shaders/` | Shader d'éclairage par pixel |
+
+### Optimisation
+
+Toute la géométrie statique (≈ 11 600 faces) est fusionnée en **35 lots, un par
+matériau**, construits une seule fois au démarrage. L'ancienne version créait un
+`PShape` par pavé (plusieurs milliers d'objets et d'appels de dessin). Les faces
+invisibles (contre le sol ou les murs) ne sont pas générées, et les textures de
+plus de 2048 px sont réduites au chargement.
+
+### Régénérer les captures
+
+```bash
+processing-java --sketch=/chemin/vers/ProjetFinal --run --capture
+```
+
+Les images `Data/images/demo1.png` à `demo5.png` sont réécrites en 1920×1080, puis le programme se ferme.
+
+---
 
 # Project Description
 
-This project involves creating a 3D model of a practical work (TP) room using Processing, a programming language and integrated development environment (IDE) used to create interactive animations and graphics. The TP room will be designed with textures, lights, and other elements to make the model as realistic as possible.
+Interactive 3D model of a computer lab built with Processing (P3D). The room holds
+4 rows of desks with 24 complete workstations, the teacher's desk with a laptop,
+a large display on a stand, boards, two doors, four windows with an outside view,
+and radiators. Rendering uses textures, per-pixel Blinn-Phong lighting with six
+attenuated ceiling lights plus daylight, and emissive screens and lamps.
 
-The TP room model will be created using geometric primitives such as cubes, spheres, cylinders, etc., to represent different elements of the room, such as tables, chairs, computers, screens, etc. Textures will be used to add realistic details and colors to the objects, while lights will be used to simulate the room's lighting.
+**Controls:** `ZQSD`/`WASD`/arrows to move, left-drag to look around, mouse wheel to
+move forward/back, `Ctrl` + wheel to zoom, `Space`/`Ctrl` up/down, `Shift` to run,
+right click or `L` to toggle lights, `+`/`-` brightness, `H` help, `R` reset, `P` screenshot.
 
-The project will also include interactive features, such as the ability to move and manipulate objects in the room, change the textures and colors of objects, and control the room's lighting.
+All static geometry is merged into one batch per material (35 draw batches),
+built once at startup.
